@@ -17,13 +17,32 @@ def solution(plans):
     print(f"task_queue : {task_queue}")
     
     while task_queue:
-    #go through the task_queue until all tasks are done 
-        name, start, duration = task_queue.popleft()
         
-        while start > current_time and paused_tasks:
+        name, start_time, duration = task_queue.popleft()
+        print(f"Starting new task: {name}, Start time: {start_time}, Duration: {duration}")
+        
+        while paused_tasks and current_time < start_time:
+            # Check if there are paused tasks and if the current time is less than the start time of the new task
+            last_task, remaining_time = paused_tasks.pop()
+            print(f"Trying to finish paused task: {last_task}, Remaining time: {remaining_time}, Current time: {current_time}")
             
+            if current_time + remaining_time <= start_time:
+                # If the paused task can be completed before the new task starts
+                current_time += remaining_time
+                completed_tasks.append(last_task)
+                print(f"Finished paused task: {last_task}, Current time: {current_time}")
+            else:
+                remaining_time -= (start_time - current_time)
+                paused_tasks.append((last_task, remaining_time))
+                print(f"Paused task again: {last_task}, New remaining time: {remaining_time}")
+                current_time = start_time
+                break
+        
+        if current_time < start_time:
+            current_time = start_time
+        if 
             
-        #if there is time to do paused tasks before the next new task starts
+        
 
             
             
