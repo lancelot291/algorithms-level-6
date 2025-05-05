@@ -9,7 +9,7 @@ def solution(name):
     
     queue = [(curr, 0, 0)]  # (current string, index, moves)
     visited = set()
-    visited.add(curr)
+    visited.add((curr, 0)) # (word, index)
     
     while queue:    
         curr_str, index, moves = queue.pop(0)
@@ -29,18 +29,18 @@ def solution(name):
         new_str = curr_str[:index] + next_char + curr_str[index+1:]
         
         # If we haven't visited this string before, add it to the queue
-        if new_str not in visited:
-            visited.add(new_str)
+        if (new_str, index + 1) not in visited:
+            visited.add((new_str, index + 1))
             queue.append((new_str, (index + 1)%n, moves + move_count+1))
             queue.append((new_str, ((index - 1)+n)%n, moves + move_count+1))
         
         # Move to the next index (right or left)
-        next_index = (index + 1) % n
-        if next_index not in visited:
-            visited.add(curr_str)
-            queue.append((curr_str, next_index, moves + 1))
+        if (new_str, index - 1) not in visited:
+            visited.add((new_str, index - 1))
+            queue.append((new_str, (index + 1)%n, moves + move_count+1))
+            queue.append((new_str, ((index - 1)+n)%n, moves + move_count+1))
             
-    return answer-1
+    return answer
     
         
     
