@@ -16,7 +16,7 @@ def solution(name):
         
         # Check if we have reached the target string
         if curr_str == name:
-            answer = moves
+            answer = moves + move_count
             break
         
         # Calculate the next character to change
@@ -28,16 +28,14 @@ def solution(name):
         # Create a new string with the updated character
         new_str = curr_str[:index] + next_char + curr_str[index+1:]
         
-        # If we haven't visited this string before, add it to the queue
-        if (new_str, index + 1) not in visited:
-            visited.add((new_str, index + 1))
+        next_index = (index + 1) % n
+        if (new_str, next_index) not in visited:
+            visited.add((new_str, next_index))
             queue.append((new_str, (index + 1)%n, moves + move_count+1))
-            queue.append((new_str, ((index - 1)+n)%n, moves + move_count+1))
         
-        # Move to the next index (right or left)
-        if (new_str, index - 1) not in visited:
-            visited.add((new_str, index - 1))
-            queue.append((new_str, (index + 1)%n, moves + move_count+1))
+        prev_index = (index - 1 + n) % n
+        if (new_str, prev_index) not in visited:
+            visited.add((new_str, prev_index))
             queue.append((new_str, ((index - 1)+n)%n, moves + move_count+1))
             
     return answer
